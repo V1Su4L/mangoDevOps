@@ -29,6 +29,17 @@ pipeline{
         stage("Push to ECR"){
             steps{
                 script{
+                    WithCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: "ecr-cred",
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID'
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]){
+                        //aws
+                        sh "echo ${AWS_SECRET_ACCESS_KEY} | aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/e9r3h5z3"
+                        sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} public.ecr.aws/e9r3h5z3/mango:latest"
+                        sh "docker push public.ecr.aws/e9r3h5z3/mango:latest"
+                    }
                     sh 'docker images'
                 }
             }
