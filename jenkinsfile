@@ -8,8 +8,10 @@ pipeline{
     }
     stages{
         stage("Clone The project"){
-            script{
-                sh "git clone ${CODE_REPO}"
+            steps{
+                script{
+                    sh "git clone ${CODE_REPO}"
+                }
             }
         }
 
