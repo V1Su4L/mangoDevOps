@@ -10,7 +10,7 @@ pipeline{
         stage("Clone The project"){
             steps{
                 script{
-                    sh 'rm -fr ${CODE_DIR}'
+                    sh "rm -fr ${CODE_DIR}"
                     sh "git clone ${CODE_REPO}"
                 }
             }
