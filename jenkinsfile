@@ -29,7 +29,7 @@ pipeline{
         stage("Push to ECR"){
             steps{
                 script{
-                    WithCredentials([[
+                    withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: "ecr-cred",
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID'
