@@ -2,12 +2,12 @@ pipeline{
     agent any
     environment{
         CODE_REPO="https://github.com/V1Su4L/mangoapp"
-        CODE_DIR="mangoapp"
+        CODE_DIR= "mangoapp"
         IMAGE_NAME="mango"
-        IMAGE_TAG="V${BUILD_NUMBER}"
+        IMAGE_TAG="v${BUILD_NUMBER}"
     }
     stages{
-        stage("Clone The project"){
+        stage("clone the project"){
             steps{
                 script{
                     sh "rm -fr ${CODE_DIR}"
@@ -16,17 +16,18 @@ pipeline{
             }
         }
 
-        stage("Build Docker Image"){
+        stage("build docker image"){
             steps{
                 script{
                     dir("${CODE_DIR}"){
+                        sh "" 
                         sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                     }
                 }
             }
         }
 
-        stage("Push to ECR"){
+        stage("push to ecr"){
             steps{
                 script{
                     withCredentials([[
@@ -40,9 +41,9 @@ pipeline{
                         sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} public.ecr.aws/e9r3h5z3/mango:latest"
                         sh "docker push public.ecr.aws/e9r3h5z3/mango:latest"
                     }
-                    sh 'docker images'
                 }
             }
         }
+
     }
 }
