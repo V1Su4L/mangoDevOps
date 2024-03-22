@@ -1,16 +1,24 @@
 pipeline{
     agent any
+    parameters{
+        CODE_REPO="https://github.com/V1Su4L/mangoapp"
+        CODE_DIR="mangoapp"
+        IMAGE_NAME="mango"
+        IMAGE_TAG="V${BUILD_NUMBER}"
+    }
     stages{
         stage("Clone The project"){
             script{
-                sh 'git clone '
+                sh "git clone ${CODE_REPO}"
             }
         }
 
         stage("Build Docker Image"){
             steps{
                 script{
-                    sh "docker build -t ${IMAGE_NAME} ."
+                    dir(${CODE_DIRECTORY}){
+                        sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    }
                 }
             }
         }
